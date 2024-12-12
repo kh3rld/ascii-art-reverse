@@ -2,9 +2,11 @@ package readwrite
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
+	"github.com/Doreen-Onyango/ascii-art-reverse/checksum"
 	"github.com/Doreen-Onyango/ascii-art-reverse/utils"
 )
 
@@ -20,6 +22,11 @@ func GenerateArt() {
 		return
 	}
 	filename := RetieveBannerFile()
+	err := checksum.ValidateFileChecksum(filename)
+	if err != nil {
+		log.Printf("Error downloading or validating file: %v", err)
+		return
+	}
 	pattern, err := ReadAscii(filename)
 	if err != nil {
 		fmt.Println("error loading banner map:", err)
