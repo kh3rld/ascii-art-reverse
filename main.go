@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/Doreen-Onyango/ascii-art-reverse/checksum"
 	asciiArt "github.com/Doreen-Onyango/ascii-art-reverse/readWrite"
 	utils "github.com/Doreen-Onyango/ascii-art-reverse/utils"
 )
@@ -28,6 +30,11 @@ func main() {
 		var success bool
 
 		for _, bannerFile := range bannerFiles {
+			err := checksum.ValidateFileChecksum(bannerFile)
+			if err != nil {
+				log.Printf("Error downloading or validating file: %v", err)
+				return
+			}
 			artToChar := utils.ParseBannerFile(bannerFile)
 			lines, err := utils.ParseFile(sampleFile)
 			if err != nil {
